@@ -1,7 +1,7 @@
 #include <stdio.h>
 
-int linear_search(int arr[], int n, int x) {
-	for(int i = 0; i < n; i++) {
+int linear_search(int array[], int size_of_array, int x) {
+	for(int i = 0; i < size_of_array; i++) {
 		if(arr[i] == x)
 			return i;
 	}
@@ -9,8 +9,8 @@ int linear_search(int arr[], int n, int x) {
 }
 
 int main(void) {
-	int arr[] = {10, 20, 30, 40, 50};
-	int n = sizeof(arr) / sizeof(arr[0]);
+	int array[] = {10, 20, 30, 40, 50};
+	int size_of_array = sizeof(arr) / sizeof(arr[0]);
 	int x = 30;
 	
 	int result = linear_search(arr, n, x);
