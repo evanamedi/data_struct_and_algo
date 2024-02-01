@@ -2,13 +2,13 @@
 
 // function named linear_search & it takes:
 // an array, size of the array, element to be searched 
-int linear_search(int arr[], int n, int x) {
+int linear_search(int array[], int size_of_array, int x) {
 
 // loop through each item starting at index[0]
-	for(int i = 0; i < n; i++) {
+	for(int i = 0; i < size_of_array; i++) {
 	
 // checks if element in current index == x
-		if(arr[i] == x)
+		if(array[i] == x)
 		
 // if check above equals true, then return i
 			return i;
@@ -20,16 +20,16 @@ int linear_search(int arr[], int n, int x) {
 int main(void) {
 
 // declare and initialize an array of integers
-	int arr[] = {10, 20, 30, 40, 50};
+	int array[] = {10, 20, 30, 40, 50};
 	
 // calculate the number of elements in the array
-	int n = sizeof(arr) / sizeof(arr[0]);
+	int size_of_array = sizeof(array) / sizeof(array[0]);
 	
 // initialize the integer to be searched
 	int x = 30;
 	
 // calles the function with its corresponding inputs
-	int result = linear_search(arr, n, x);
+	int result = linear_search(array, size_of_array, x);
 	
 // uses ternary operator to check value retuned to result
 	(result == -1) ? printf("Integer is not present in array")
