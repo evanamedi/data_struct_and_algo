@@ -1,0 +1,16 @@
+LINEAR SEARCH:
+is a simple searching algorithm that traverses all items in an array looking in each index for for a specified input. once a match to the input is found, the item is returned. otherwise it will continue checking all items until either the item is found, or it has exhausted the entire array.
+
+
+STEPS:
+1) start at the left most position and being searching starting at index 0
+2) compare the item in the current index with the input item
+3) if the current item does not match, move to the next index to the right
+4) if the item is found, then return the index the item was found in
+5) if every item in the array is traversed and the item is not found, return an error indicator
+
+
+time complexity:O(n)
+
+REASON:
+is that in the worst case (either item is not found, or is the very last item) the algorithm will have had to check every single item in the entire array. which indicates that the time complexity is dependent on the size of the array. the time it takes to traverse the entire array is equally dependent on the size. generally a very inefficient algorithm when implemented on large data sets. best use case would be a small number of items, or single search on an unsorted list.
