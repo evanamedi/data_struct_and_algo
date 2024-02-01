@@ -1,0 +1,15 @@
+list of what each topic will include:
+
+
+1) a txt file explaining the topic in my own words;
+a step by step process of how it works;
+what the time complexity is;
+explain why that is the time complexity
+
+2) a program in C implementing the topic
+
+3) a copy of the C program with detailed comments
+
+4) a program in Python translated from the C program
+
+5) both of the c binary files			
