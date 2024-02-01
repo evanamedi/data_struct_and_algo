@@ -1,0 +1,27 @@
+BINARY SEARCH:
+is an algorithm that works by selecting the item that is in the middle of the given list. depending on the value of the selected item (with respect to the value of the item being searched), it will divide the list in half- either discarding the first half leading up to the selected item, or discarding the second half after the selected item. note that for this algorithm to work correctly, the list has to be sorted prior to the search.
+
+
+STEPS:
+1) start with the item in the middle of the sorted list
+2) if the middle item is what you're looking for, return its index
+otherwise;
+3) either: 
+
+the value you're looking for is less than the middle item, then ignore all the values to the right 
+
+or;
+
+the value you're looking for is greater than the middle item, then ignore all the values to the left
+
+4) take the newly halved list, and apply step 2
+if step 2 is false, then reapply step 3
+
+5) continue until either the value is found, or the list is exhausted 
+6) return the index for the value, or -1 if not found
+
+
+time complexity: O(log n)
+
+REASON:
+is because with each comparison, your search is being halved. so the amount of elements that you need to search decreases exponentially with each repetition. first n/2, then n/4, and so on... it becomes a question of how many times do you need to half the set, until you find what you are looking for. so even as the data set becomes increasingly larger, it remains efficient. each time the list is doubled in size, it only adds one more step to the process.
