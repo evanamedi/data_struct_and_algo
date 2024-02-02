@@ -18,7 +18,7 @@ int main(void) {
 	int x = 29;
 	int result = binary_search(array, 0, n - 1, x);
 	(result != -1) ? printf("Integer is present at index %d\n", result)
-				   : printf("Integer is no present in the array\n");
+				   : printf("Integer is not present in the array\n");
 				   
 	return 0;
 }
