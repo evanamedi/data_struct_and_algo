@@ -1,0 +1,234 @@
+While not exactly an algorithm, hashing is a technique used in in computing to map data of any size to a fixed size. It's a one-way function, meaning that once data has been hashed, it cannot be reversed or decrypted to retrieve the input data. This makes hashing particularly useful in data structures like hash tables, and in security applications like storing passwords.
+
+
+Here is a step-by-step explanation of how hashing works:
+
+1) Input Data: Hashing starts with the input data, which can be of any size. This could be a string, a file, or even an entire database.
+
+2) Hash Function: The input data is passed through a hash function. This function uses an algorithm to convert the input data into a fixed-size of characters, which typically looks like a random sequence of characters. The output is known as the hash value or hash code.
+
+3) Output Hash: The hash function produces a fixed-size string of characters regardless of the size of the input data. This is the hash of the input data.
+
+4) Unique Hashes: Ideally, a hash function will produce a unique hash for each unique input. This is known as being collision-free. However, in practice, different inputs can sometimes produce the same hash. This is known as hash collision.
+
+5) One-way Function: hashing is a one-way function. This means that it;s computationally infeasible to reverse the process and generate the original input from the hash.
+
+6) Usage: Hashing is used in many areas of computing, including data retrieval, password storage, and data integrity verification. For example, in a hash table, data can be stored and retrieved in constant time with using the hash of the data as an index.
+
+
+A simple example of a hash function in python:
+
+
+def simple_hash(input_string):
+	return sum(ord(c) for c in input_string)
+
+
+This function takes a string as input and returns a hash, which is the sum of the ASCII values of the characters in the string. Note that this a very simple application of a hash function, and not at all suitable for security sensitive applications.
+
+
+A common use of hashing is in the implementation of hash tables or hash maps:
+
+A hash table is a data structure that implements an associative array abstract data type, a structure that can map keys to values. Hash tables use a hash function to compute an index into an array of buckets or slots, from which the desired value can be found.
+
+
+A simple example:
+
+Let's say we have a list of students with their respective IDs, and we want to build a system that can quickly look up a student's name given their ID. We could use a hash table to do this.
+
+1) Input Data: The input data is the student ID
+
+2) Hash Function: The hash function takes the student ID and produces a hash value. This hash value is used as an index in an array.
+
+3) Storing Data: The student's name is stored at the index in the array that corresponds to the hash value.
+
+4) Retrieving Data: When we want to loop up a student's name using their ID, we pass the ID through the hash function to get the index, and then retrieve the name stored at that index in the array.
+
+Here's an implementation of this example in Python using a dictionary, which is a built-in hash table:
+
+
+# Create a dictionary to store the students
+students = {}
+
+# Add students to the dictionary
+students["123"] = "Alice"
+students["456"] = "Bob"
+students["789"] = "Charlie"
+
+# Look up a student
+print(students["456"])	# outputs: Bob
+
+
+In this example, the dictionary [ students ] is a hash table. The student IDs are the keys, and the student names are the values. The hash function is built into the Python dictionary implementation. When we look up a student, the ID is hashed to find the corresponding name in constant time. However this does not account of the possibility of hash collisions, where two keys produce the same hash.
+
+Hash collisions occur when a hash function returns the same hash value for two different inputs. This is a problem because in a hash table, each unique key should map to a unique location. We'll go over two of the many strategies for handling hash collisions. But the best strategy depends on the specific requirements of your application, including factors like the expected number of collisions, the distribution of keys, and the required performance.
+
+
+1) Separate Chaining:
+In separate chaining, each slot in the hash table points to a linked list of entries that have the same hash value. When a collision occurs, the new key-value pair is added to the end of the linked list. To search for a value, we use the hash function to find the correct slot, then traverse the linked list to find the key-value pair.
+
+An example in Python:
+
+
+class HashTable:
+	def __init__(self):
+		self.size = 10		#set the size of the hash table
+		self.table = [[] for _ in range(self.size)]	#initialize the hash table with empty lists
+
+	def hash_function(self, key):
+		return key % self.size 	#simple hash function that uses modulo arithmetic
+
+	def insert(self, key, value):
+		hash_index = self.hash_function(key)	#compute the hash of the key
+		for pair in self.table[hash_index]:	#check if key already exists in the hash table
+			if pair[0] == key:
+				pair[1] = value	#if key exists, update the value
+				return
+		#if key does not exist, add a new key-value pair to the hash table
+		self.table[hash_index].append([key, value])
+
+	def search(self, key):
+		hash_index = self.hash_function(key)	#compute the hash of the key
+		for pair in self.table[hash_index]:	#traverse the list at the hashed index
+			if pair[0] == key:	#if the key is found
+				return pair[1]	#return the corresponding value
+		return None		#if the key is not found, return None
+
+
+This code defines a simple hash table that uses separate chaining to resolve hash collisions. The [ insert ] method adds a key-value pair to the hash table, and the [ search ] method retrieves the values associated with a given key. If a key is inserted that already exists in the hash table, the corresponding value is updated. If a key is searched that does not exist in the hash table, [ None ] is returned.
+
+
+2) Open Addressing (Linear Probing):
+In open addressing, all elements are stored in the hash table itself. When a collision occurs, we find the next available slot. This is often done through linear probing, which means checking the hash table slots sequentially (wrapping around to the start if necessary) until an empty slot if found.
+
+An example:
+
+
+class HashTable:
+	def __init__(self):
+		self.size = 10 		#set the size of the hash table
+		self.keys = [None] * self.size 		#initialize the keys array with None
+		self.values = [None] * self.size 	#initialize the values array with None
+
+	def hash_function(self, key):
+		return key % self.size		#hash function that uses modulo arithmetic
+
+	def insert(self, key, value):
+		index = self.hash_function(key)		#compute the hash of the key
+
+		#find the next available slot if there is a collision
+		while self.keys[index] is not None:
+			if self.keys[index] == key:
+				self.values[index] = value	#if key exists, update the value
+				return
+			index = (index + 1) % self.size		#linear probing
+		#if key does not exist, add a new key-value pair to the hash table
+		self.keys[index] = key
+		self.values[index] = value
+
+	def search(self, key):
+		index = self.hashfunction(key)		#compute the hash of the key
+		#find the key in the hash table
+		while self.keys[index] is not None:
+			if self.keys[index] == key:
+				return self.values[index]	#if key is found, return the corresponding value
+			index = (index + 1) % self.size		#linear probing
+		return None		# if the key is not found, return None
+
+
+This code defines a simple hash table that uses open addressing with linear probing to resolve hash collisions. The [ insert ] method add a key-value pair to the hash table, and the [ search ] method retrieves the value associated with a given key. If a key is inserted that ready exists in the hash table, the corresponding value is updated. If a key is searched that does not exist in the hash table, None is returned.
+
+
+
+Another common use case of hashing is in the context of password storage.
+
+When you sign up for an online service, you usually need to create a password. For security reasons, the service should not store your password in plain text, because if their database is compromised, your password could be exposed.
+
+Instead, the service uses a hash function to create a hash of your password. This hash is stored in the database, not the password itself. The hash function is designed to be one-way, meaning it's computationally infeasible to reverse the process and generate your password from the hash. 
+
+When you log in to the service, you enter your password. Their service runs your password through the same hash function to create a hash. If this hash matches the hash stored in the database, the service knows you entered the correct password and grants you access.
+
+A simple example in Python using the hashlib library, which provides the SHA256 hash function:
+
+
+import hashlib
+
+#when the user creates their password
+password = "my_password"
+hashed_password = hashlib.sha256(password.encode()).hexdigest()
+
+# store hashed_password in the database...
+
+#when the user logs in
+entered_password = "my_password"	#the password entered by the user
+hashed_entered_password = hashlib.sha256(entered_password.encode()).hexdigest()
+
+if hashed_entered_password == hashed_password:
+	print("Access granted")
+else:
+	print("Access denied")
+
+
+In this example, the password is hashed using the SHA256 function, and the hashed password is compared to the stored hash to authenticate the user. Note that this is a simplified example and real-world applications should also use a salt to prevent rainbow table attacks.
+
+
+SHA-256 (Secure Hash Algorithm 256-bit) is a cryptographic hash function that produces a 256-bit (32-byte) hash value. It's a member of the SHA-2 (Secure Hash Algorithm 2) family, designed by the National Security Agency (NSA) and published by the National Institute of Standards and Technology (NIST).
+
+Here's a high-level overview of how the SHA-256 algorithm works:
+
+Preprocessing: The input message is padded so its length is a multiple of 512 bits. The padding includes the original length of the message and a bit '1' followed by necessary number of '0's.
+
+Parsing: The padded message is divided into blocks of 512 bits.
+
+Setting Initial Hash Value: A set of eight 32-bit words (H0, H1, ..., H7) are initialized. These words are defined in the SHA-256 specification and are based on the first 32 bits of the fractional parts of the square roots of the first eight prime numbers.
+
+Hash Computation: Each 512-bit block is processed in 64 rounds of hashing, which involve logical functions and bitwise operations. The functions used are based on bitwise operations such as AND, OR, XOR, bitwise rotation and bitwise shifting. The result is a new set of H0 to H7.
+
+Output: The concatenation of the final H0 to H7 is the 256-bit hash of the input message.
+
+The SHA-256 algorithm is designed to be a one-way function, meaning that once data has been hashed, it cannot be reversed or decrypted to retrieve the original input data. This makes it useful for a variety of cryptographic and data security applications, including password hashing and data integrity checks.
+
+It's important to note that while SHA-256 is currently considered secure, no hash function is impervious to attack. As computational power increases, the security of SHA-256 could be compromised in the future. For this reason, researchers are already working on new hash functions (like those in the SHA-3 family) to replace SHA-2 when necessary.
+
+
+In the context of password storage, "salt" is random data that is used as an additional input to a hashing function. The primary purpose of salt is to defend against dictionary attacks or attacks using precomputed tables such as rainbow tables.
+
+Here's how it works:
+
+When a user creates an account or changes their password, a new salt value is generated.
+The salt is combined with the password, often by appending or prepending it to the password string.
+The salted password is then passed through a hash function.
+Both the salt and the hashed password are stored in the database.
+When the user tries to log in, the process is repeated with the stored salt. The salted password is hashed, and the result is compared to the stored hash. If they match, the password is correct.
+
+The addition of salt increases the security of stored passwords in two ways:
+
+Uniqueness: Even if two users have the same password, their hashed passwords will be different because their salts are different. This prevents an attacker from using one hash to compromise multiple accounts.
+
+Resistance to Precomputed Tables: An attacker can't use a precomputed table of hash values (like a rainbow table) to attack the passwords, because they would need a separate table for each possible salt.
+
+Here's a simple example of how you might implement salting in Python using the bcrypt library:
+
+
+import bcrypt
+
+#generate a salt
+salt = bcrypt.gensalt()
+
+#hash a password with the salt
+hashed_password = bcrypt.hashpw(password.encode('utf-8'), salt)
+
+
+In this example, bcrypt.gensalt() generates a new salt every time it's called. bcrypt.hashpw() combines the password and salt and applies the bcrypt hash function. The result is a hashed password that includes the salt as part of the hash string, so you don't need to store the salt separately.
+
+
+
+
+
+
+
+
+
+
+
+
+__________________________________
